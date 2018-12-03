@@ -5,7 +5,7 @@ import configparser
 
 # checking for root
 
-if check_root():
+if os.getuid():
     sys.exit('Root access required, try running as sudo.')
 
 # reading config settings

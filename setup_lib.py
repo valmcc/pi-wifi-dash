@@ -1,9 +1,6 @@
 import os
 
 
-def check_root():
-    return os.getuid()
-
 def install_packages():
     print('Installing required packages')
     os.system('apt-get update')
