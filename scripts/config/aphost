@@ -1,0 +1,8 @@
+#!/bin/bash
+# Causes the device to run in wifi host mode
+
+python3 /usr/lib/pi-wifi-dash/scripts/reset/reset.py &
+
+python3 /usr/lib/pi-wifi-dash/webserver/app.py &
+
+hostapd -dd /etc/hostapd/hostapd.conf &

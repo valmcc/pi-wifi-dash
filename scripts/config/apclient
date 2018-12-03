@@ -1,0 +1,6 @@
+#!/bin/bash
+# Causes the device to run in wifi client mode
+
+python3 /usr/lib/pi-wifi-dash/scripts/reset.py &
+
+python3 /usr/lib/pi-wifi-dash/scripts/check_wifi_active.py &
