@@ -11,7 +11,7 @@ ssid = config['DEFAULT']['SSID']
 # Check if ssid is the temporary one
 ssid_temp = 'ssidtemp'
 
-hostapd_reset = reset_lib.reset_required_check(ssid_temp)
+hostapd_reset = reset_lib.reset_required_check(ssid)
 
 if hostapd_reset == True:
     update_ssid(ssid)
