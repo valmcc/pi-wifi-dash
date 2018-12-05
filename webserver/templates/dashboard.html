@@ -1,0 +1,195 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h3">Historical Values</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group mr-2">
+        <button id="reset_zoom", class="btn btn-sm btn-outline-secondary">Reset Zoom</button>
+        <button class="btn btn-sm btn-outline-secondary">Export</button>
+      </div>
+      <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
+        <span data-feather="calendar"></span>
+        Hourly
+      </button>
+    </div>
+
+
+    <canvas style="min-height:380px !important", class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+  </div>
+  <h1 class="h3">Live Values</h1>
+  <div class="table-responsive">
+            <table class="table table-striped table-sm">
+              <thead>
+                <tr>
+                  <th>A1</th>
+                  <th>A2</th>
+                  <th>A3</th>
+                  <th>A4</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="A1">Loading...</td>
+                  <td id="A2">Loading...</td>
+                  <td id="A3">Loading...</td>
+                  <td id="A4">Loading...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+  <!-- Graphs -->
+<script src="static/js/moment.js"></script>
+<script src="static/js/hammer.min.js"></script>
+<script src="static/js/Chart.js"></script>
+<script src="static/js/chartjs-plugin-zoom.min.js"></script>
+<script>
+  function reset_zoom(){
+    myChart.resetZoom()
+  }
+  document.getElementById("reset_zoom").onclick = reset_zoom;
+</script>
+
+
+<script>
+function update_live_values() {
+            $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+            $.getJSON($SCRIPT_ROOT+"/_update_live_values",
+                function(data) {
+                    $("#A1").text(data.A1.toFixed(2))
+                    $("#A2").text(data.A2.toFixed(2))
+                    $("#A3").text(data.A3.toFixed(2))
+                    $("#A4").text(data.A4.toFixed(2))
+                });
+        }
+var int=self.setInterval(update_live_values, 1000);
+</script>
+
+<script>
+  var ctx = document.getElementById("myChart");
+  var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: [],
+      datasets: [
+      {
+        data: [],
+        label:'A1',
+        lineTension: 0,
+        borderColor: '#30A4A6',
+        backgroundColor: 'transparent',
+        borderWidth: 4,
+      },
+      {
+        data: [],
+        label:'A2',
+        lineTension: 0,
+        borderColor: '#341046',
+        backgroundColor: 'transparent',
+        borderWidth: 4,
+      },
+      {
+        data: [],
+        label:'A3',
+        lineTension: 0,
+        borderColor: '#F89C6A',
+        backgroundColor: 'transparent',
+        borderWidth: 4,
+      },
+      {
+        data: [],
+        label:'A4',
+        lineTension: 0,
+        backgroundColor: 'transparent',
+        borderColor: '#D43663',
+        borderWidth: 4,
+      },
+      ]
+    },
+    options: {
+      animation: false,
+      responsive: true,
+      maintainAspectRatio: true,
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: false
+          }
+        }],
+        xAxes: [{
+          type: 'time'
+        }],
+      },
+      legend: {
+        display: true,
+        position:'bottom',
+      },
+      // Container for pan options
+  pan: {
+    // Boolean to enable panning
+    enabled: true,
+
+    // Panning directions. Remove the appropriate direction to disable 
+    // Eg. 'y' would only allow panning in the y direction
+    mode: 'xy',
+    rangeMin: {
+      // Format of min pan range depends on scale type
+      x: null,
+      y: null
+    },
+    rangeMax: {
+      // Format of max pan range depends on scale type
+      x: null,
+      y: null
+    },
+    // Function called once panning is completed
+    // Useful for dynamic data loading
+    onPan: function() { console.log('I was panned!!!'); }
+  },
+  
+  // Container for zoom options
+  zoom: {
+    // Boolean to enable zooming
+    enabled: true,
+
+    // Enable drag-to-zoom behavior
+    drag: false,
+
+    // Zooming directions. Remove the appropriate direction to disable 
+    // Eg. 'y' would only allow zooming in the y direction
+    mode: 'xy',
+    rangeMin: {
+      // Format of min zoom range depends on scale type
+      x: null,
+      y: null
+    },
+    rangeMax: {
+      // Format of max zoom range depends on scale type
+      x: null,
+      y: null
+    },
+    // Function called once zooming is completed
+    // Useful for dynamic data loading
+    onZoom: function() { console.log('I was zoomed!!!'); }
+
+  }
+    }
+  });
+function update_log_values() {
+            $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+            $.getJSON($SCRIPT_ROOT+"/_update_log_values",
+                function(data) {
+                    console.log(data.timestamp_log)
+                    console.log(data.P1)
+                    myChart.data.labels = data.timestamp_log
+                    myChart.data.datasets[0].data = data.P1
+                    myChart.data.datasets[1].data = data.P2
+                    myChart.data.datasets[2].data = data.P3
+                    myChart.data.datasets[3].data = data.P4
+                });
+            myChart.update()
+        }
+var int=self.setInterval(update_log_values, 4000);
+</script>
+{% endblock %}

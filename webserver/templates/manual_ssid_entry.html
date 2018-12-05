@@ -1,20 +1,25 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-  <div id="mainContent">
+  <div id="container", class="mx-lg-5 px-lg-5">
     <h1>WiFi Setup</h1>
-    <div class="wifiIcon"></div>
 
     <form action="{{ url_for('save_credentials') }}" method=post>
-      <ul>
-        <li><label for="ssid">Enter your network SSID:</label></li>
-        <li><input type="text" name="ssid", class="wifiNetworkInputs"></li>
+      <p class="lead">Select WiFi Network:</label></p>
 
-        <li><label for="wifi_key">Your Wifi password</label></li>
-        <li><input type="password" name="wifi_key", class="wifiNetworkInputs"></li>
+      <div class="form-group">
+        <input id="ssid" name="ssid", class="form-control", placeholder="SSID">
+        </input>
+      </div>
 
-        <input type="submit", class="wifiConnectButton">
-      </ul>
+      <p class="lead">Enter WiFi Password:</label></p>
+      <div class="form-group"><input type="password" name="wifi_key", class="form-control", placeholder="Password"></div>
+
+      <button type="submit",type="button", class="btn btn-primary mt-3">Submit</button>
     </form>
+
+    <p><a href="{{ url_for('config') }}" class="form-text text-muted text-right">Select WiFi Network Name from list</a></p>
   </div>
 {% endblock %}
+
+

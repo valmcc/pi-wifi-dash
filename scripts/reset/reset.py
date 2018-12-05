@@ -14,7 +14,7 @@ ssid_temp = 'ssidtemp'
 hostapd_reset = reset_lib.reset_required_check(ssid)
 
 if hostapd_reset == True:
-    update_ssid(ssid)
+    reset_lib.update_ssid(ssid)
     os.system('reboot')
 
 

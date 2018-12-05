@@ -1,6 +1,7 @@
 import os
 import subprocess
 import time
+import fileinput
 
 
 def reset_required_check(ssid):

@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+  <div id="container", class="mx-lg-5 px-lg-5">
+    <h1>WiFi Setup</h1>
+
+    <form action="{{ url_for('save_credentials') }}" method=post>
+      <p class="lead">Select WiFi Network:</label></p>
+
+      <div class="dropdown">
+        <select id="ssid" name="ssid", class="form-control form-control">
+          {% for ssid in wifi_ap_array %}
+            <option value='{{ ssid }}'>{{ ssid }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <p class="lead mt-3">Enter WiFi Password:</label></p>
+      <div class="form-group"><input type="password" name="wifi_key", class="form-control", placeholder="Password"</div>
+
+      <button type="submit",type="button", class="btn btn-primary mt-3">Submit</button>
+    </form>
+
+      <p><a href="{{ url_for('manual_ssid_entry') }}" class="form-text text-muted text-right">Manually enter WiFi Network Name</a></p>
+  </div>
+{% endblock %}
