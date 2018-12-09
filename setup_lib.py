@@ -5,7 +5,7 @@ def install_packages():
     print('Installing required packages')
     os.system('apt-get update')
     os.system('apt-get install python3 python3-pip dnsmasq hostapd -y')
-    os.system('pip3 install flask pyopenssl')
+    os.system('pip3 install flask pyopenssl apscheduler')
     print('Packages installed!')
 
 def install_config():
