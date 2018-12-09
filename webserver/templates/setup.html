@@ -22,5 +22,33 @@
     </form>
 
       <p><a href="{{ url_for('manual_ssid_entry') }}" class="form-text text-muted text-right">Manually enter WiFi Network Name</a></p>
+    <h2>Reset Configuration</h2>
+    <p class="lead">Reset device to hotspot mode, resetting current WiFi settings.</label></p>
+    <!-- Button trigger modal -->
+<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#reset">
+  Reset
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="reset" tabindex="-1" role="dialog" aria-labelledby="resettitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="resettitle">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you would like to reset the device to hotspot mode?
+        This will remove any previously saved WiFi networks
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger">Reset</button>
+      </div>
+    </div>
+  </div>
+</div>
   </div>
 {% endblock %}

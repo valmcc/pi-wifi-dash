@@ -1,21 +1,17 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom", onload="update_log_values()">
     <h1 class="h3">Historical Values</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
       <div class="btn-group mr-2">
         <button id="reset_zoom", class="btn btn-sm btn-outline-secondary">Reset Zoom</button>
-        <button class="btn btn-sm btn-outline-secondary">Export</button>
+        <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('update_log_values') }}" download="log_data.json" role="button">Export</a>
       </div>
-      <button class="btn btn-sm btn-outline-secondary dropdown-toggle">
-        <span data-feather="calendar"></span>
-        Hourly
-      </button>
     </div>
-
-
-    <canvas style="min-height:380px !important", class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+    </div>
+  <div style="min-height:380px !important">
+    <canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
   </div>
   <h1 class="h3">Live Values</h1>
   <div class="table-responsive">
@@ -110,7 +106,7 @@ var int=self.setInterval(update_live_values, 1000);
     options: {
       animation: false,
       responsive: true,
-      maintainAspectRatio: true,
+      maintainAspectRatio: false,
       scales: {
         yAxes: [{
           ticks: {
@@ -118,12 +114,19 @@ var int=self.setInterval(update_live_values, 1000);
           }
         }],
         xAxes: [{
-          type: 'time'
+          type: 'time',
+          ticks: {
+            maxRotation: 0,
+            minRotation: 0
+          }
         }],
       },
       legend: {
         display: true,
         position:'bottom',
+        usePointStyle:'true',
+        boxWidth:1,
+        padding:1,
       },
       // Container for pan options
   pan: {
@@ -132,7 +135,7 @@ var int=self.setInterval(update_live_values, 1000);
 
     // Panning directions. Remove the appropriate direction to disable 
     // Eg. 'y' would only allow panning in the y direction
-    mode: 'xy',
+    mode: 'x',
     rangeMin: {
       // Format of min pan range depends on scale type
       x: null,
@@ -158,7 +161,7 @@ var int=self.setInterval(update_live_values, 1000);
 
     // Zooming directions. Remove the appropriate direction to disable 
     // Eg. 'y' would only allow zooming in the y direction
-    mode: 'xy',
+    mode: 'x',
     rangeMin: {
       // Format of min zoom range depends on scale type
       x: null,
@@ -177,11 +180,10 @@ var int=self.setInterval(update_live_values, 1000);
     }
   });
 function update_log_values() {
+  console.log("updating log values")
             $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
             $.getJSON($SCRIPT_ROOT+"/_update_log_values",
                 function(data) {
-                    console.log(data.timestamp_log)
-                    console.log(data.P1)
                     myChart.data.labels = data.timestamp_log
                     myChart.data.datasets[0].data = data.P1
                     myChart.data.datasets[1].data = data.P2
@@ -190,6 +192,8 @@ function update_log_values() {
                 });
             myChart.update()
         }
+window.onload = function () { update_log_values() }
 var int=self.setInterval(update_log_values, 4000);
+
 </script>
 {% endblock %}
