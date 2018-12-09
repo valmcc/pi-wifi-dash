@@ -81,16 +81,49 @@ def update_log_values():
 
 
 def scan_wifi_networks():
-    ap_array = ['testap1', 'testap2']
+    iwlist_raw = subprocess.Popen(['iwlist', 'scan'], stdout=subprocess.PIPE)
+    ap_list, err = iwlist_raw.communicate()
+    ap_array = []
+
+    for line in ap_list.decode('utf-8').rsplit('\n'):
+        if 'ESSID' in line:
+            ap_ssid = line[27:-1]
+            if ap_ssid != '':
+                ap_array.append(ap_ssid)
+
     return ap_array
 
 
 def create_wpa_supplicant(ssid, wifi_key):
-    pass
+    temp_conf_file = open('wpa_supplicant.conf.tmp', 'w')
+
+    temp_conf_file.write('ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev\n')
+    temp_conf_file.write('update_config=1\n')
+    temp_conf_file.write('\n')
+    temp_conf_file.write('network={\n')
+    temp_conf_file.write('  ssid="' + ssid + '"\n')
+
+    if wifi_key == '':
+        temp_conf_file.write('  key_mgmt=NONE\n')
+    else:
+        temp_conf_file.write('  psk="' + wifi_key + '"\n')
+
+    temp_conf_file.write('  }')
+
+    temp_conf_file.close
+
+    os.system('mv wpa_supplicant.conf.tmp /etc/wpa_supplicant/wpa_supplicant.conf')
 
 
 def set_ap_client_mode():
-    pass
+    os.system('rm -f /etc/pi-wifi-dash/host')
+    os.system('rm /etc/cron.pi-wifi-dash/aphost')
+    os.system('cp /usr/lib/pi-wifi-dash/scripts/config/apclient /etc/cron.pi-wifi-dash')
+    os.system('chmod +x /etc/cron.pi-wifi-dash/apclient')
+    os.system('mv /etc/dnsmasq.conf.orig /etc/dnsmasq.conf')
+    os.system('mv /etc/dhcpcd.conf.orig /etc/dhcpcd.conf')
+    #os.system('cp /usr/lib/raspiwifi/reset_device/static_files/isc-dhcp-server.apclient /etc/default/isc-dhcp-server')
+    os.system('reboot')
 
 
 def obtain_live_values():
