@@ -53,6 +53,15 @@ def save_credentials():
 
     return render_template('save_credentials.html', ssid=ssid)
 
+@app.route('/reset_host')
+def dashboard():
+    def sleep_and_reset_host():
+        time.sleep(2)
+        reset_to_host()
+    t = Thread(target=sleep_and_reset_host)
+    t.start()
+
+    return render_template('reset_host.html')
 
 @app.route('/')
 def dashboard():
@@ -79,6 +88,8 @@ def update_log_values():
     #obtain_log_values() # this should instead be triggered by an external timer
     return jsonify(timestamp_log=list(timestamp_log), P1=list(P1), P2=list(P2), P3=list(P3), P4=list(P4))
 
+
+# Functions
 
 def scan_wifi_networks():
     iwlist_raw = subprocess.Popen(['iwlist', 'scan'], stdout=subprocess.PIPE)
@@ -149,6 +160,20 @@ def obtain_log_values():
     P2.append(A2)
     P3.append(A3)
     P4.append(A4)
+
+def reset_to_host():
+    if not os.path.isfile('/etc/pi-wifi-dash/host'):  # if not already in host mode
+        os.system('rm -f /etc/wpa_supplicant/wpa_supplicant.conf')
+        os.system('rm /etc/cron.pi-wifi-dash/apclient')
+        os.system('cp /usr/lib/pi-wifi-dash/scripts/config/aphost /etc/cron.pi-wifi-dash')
+        os.system('chmod +x /etc/cron.pi-wifi-dash/aphost')
+        os.system('mv /etc/dhcpcd.conf /etc/dhcpcd.conf.orig')
+        os.system('cp /usr/lib/pi-wifi-dash/scripts/config/dhcpcd.conf /etc/')
+        os.system('mv /etc/dnsmasq.conf /etc/dnsmasq.conf.orig')
+        os.system('cp /usr/lib/pi-wifi-dash/scripts/config/dnsmasq.conf /etc/')
+        os.system('cp /usr/lib/pi-wifi-dash/scripts/config/hostapd.conf /etc/hostapd/')
+        os.system('touch /etc/pi-wifi-dash/host')
+    os.system('reboot')
 
 scheduler = BackgroundScheduler()
 scheduler.add_job(func=obtain_log_values, trigger="interval", seconds=5)
