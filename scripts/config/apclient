@@ -3,6 +3,6 @@
 
 python3 /usr/lib/pi-wifi-dash/scripts/reset/reset.py &
 
-python3 /usr/lib/pi-wifi-dash/webserver/app.py &
+python3 /usr/lib/pi-wifi-dash/scripts/reset/check_wifi_active.py &
 
-python3 /usr/lib/pi-wifi-dash/scripts/check_wifi_active.py &
+python3 /usr/lib/pi-wifi-dash/webserver/app.py &

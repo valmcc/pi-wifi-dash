@@ -54,7 +54,7 @@ def save_credentials():
     return render_template('save_credentials.html', ssid=ssid)
 
 @app.route('/reset_host')
-def dashboard():
+def reset_host():
     def sleep_and_reset_host():
         time.sleep(2)
         reset_to_host()
