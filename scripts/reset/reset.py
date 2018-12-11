@@ -1,5 +1,4 @@
 import os
-import time
 import reset_lib
 import configparser
 
@@ -16,6 +15,4 @@ hostapd_reset = reset_lib.reset_required_check(ssid)
 if hostapd_reset == True:
     reset_lib.update_ssid(ssid)
     os.system('reboot')
-
-
 

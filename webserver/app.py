@@ -67,9 +67,9 @@ def reset_host():
 def dashboard():
     return render_template('dashboard.html')
 
-@app.route('/help')
-def help():
-    return render_template('help.html')
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 # GET requests for the graph/live values
 
