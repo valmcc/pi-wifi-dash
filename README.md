@@ -43,6 +43,13 @@ sudo python3 setup.py
 
 The device will display its options and install the necessary packages. On completion a prompt will display asking the user whether they would like to reboot the device to finalise the installation.
 
+## Configuration
+
+*setup.cfg* provides options to modify:
+
+* **SSID** - this determines the network of the hotspot
+* **ReconnectionDelay** - this determines how long it takes for the device to return to hotspot mode after either 1) an incorrect SSID is entered or 2) the wifi network the device is connected to goes offline
+* **DashboardLogRefresh** - how long to wait between updating values for the dashboard graph
 
 ## Devices Tested
 
