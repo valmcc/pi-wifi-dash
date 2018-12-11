@@ -10,6 +10,12 @@ from threading import Thread
 from time import sleep
 import atexit
 from apscheduler.schedulers.background import BackgroundScheduler
+import configparser
+
+# reading config settings
+config = configparser.ConfigParser()
+config.read('/usr/lib/pi-wifi-dash/scripts/config/setup.cfg')
+dashboard_log_refresh = config['DEFAULT']['DashboardLogRefresh']
 
 app = Flask(__name__)
 app.debug = True
@@ -176,7 +182,7 @@ def reset_to_host():
     os.system('reboot')
 
 scheduler = BackgroundScheduler()
-scheduler.add_job(func=obtain_log_values, trigger="interval", seconds=5)
+scheduler.add_job(func=obtain_log_values, trigger="interval", seconds=dashboard_log_refresh)
 scheduler.start()
 
 if __name__ == '__main__':
