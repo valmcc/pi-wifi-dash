@@ -50,6 +50,7 @@ The device will display its options and install the necessary packages. On compl
 * **SSID** - this determines the network of the hotspot
 * **ReconnectionDelay** - this determines how long it takes for the device to return to hotspot mode after either 1) an incorrect SSID is entered or 2) the wifi network the device is connected to goes offline
 * **DashboardLogRefresh** - how long to wait between updating values for the dashboard graph
+* **Timezone** - determines the timezone for the graph on the dashboard
 
 ## Devices Tested
 
