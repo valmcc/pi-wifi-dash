@@ -11,11 +11,13 @@ from time import sleep
 import atexit
 from apscheduler.schedulers.background import BackgroundScheduler
 import configparser
+import pytz
 
 # reading config settings
 config = configparser.ConfigParser()
 config.read('/usr/lib/pi-wifi-dash/scripts/config/setup.cfg')
-dashboard_log_refresh = config['DEFAULT']['DashboardLogRefresh']
+dashboard_log_refresh = int(config['DEFAULT']['DashboardLogRefresh'])
+tz = config['DEFAULT']['Timezone']
 
 app = Flask(__name__)
 app.debug = True
@@ -155,7 +157,7 @@ def obtain_live_values():
 
 
 def obtain_log_values():
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    timestamp = datetime.now(tz).strftime('%Y-%m-%d %H:%M:%S')
     timestamp_log.append(timestamp)
     global A1
     global A2

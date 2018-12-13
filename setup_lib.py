@@ -4,7 +4,7 @@ import os
 def install_packages():
     print('Installing required packages')
     os.system('until apt-get update; do echo "Failed! Trying again"; sleep 2; done')
-    os.system('until apt-get install python3 python3-pip dnsmasq hostapd -y; do echo "Failed! Trying again"; sleep 2; done')
+    os.system('until apt-get install python3 python3-pip dnsmasq hostapd ntp -y; do echo "Failed! Trying again"; sleep 2; done')
     os.system('until pip3 install flask pyopenssl apscheduler; do echo "Failed! Trying again"; sleep 2; done')
     print('Packages installed!')
 
