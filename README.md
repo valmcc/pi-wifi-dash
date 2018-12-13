@@ -56,4 +56,4 @@ The device will display its options and install the necessary packages. On compl
 
 ## Devices Tested
 
-* Raspberry Pi 3B
+* Raspberry Pi 3B Vi. 2
