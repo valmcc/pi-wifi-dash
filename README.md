@@ -43,6 +43,8 @@ sudo python3 setup.py
 
 The device will display its options and install the necessary packages. On completion a prompt will display asking the user whether they would like to reboot the device to finalise the installation.
 
+**I would recommend changing the default device password from the default! **
+
 ## Configuration
 
 *setup.cfg* provides options to modify:
