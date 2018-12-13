@@ -13,6 +13,7 @@ config = configparser.ConfigParser()
 config.read('setup.cfg')
 SSID = config['DEFAULT']['SSID']
 ReconnectionDelay = config['DEFAULT']['ReconnectionDelay']
+tz = config['DEFAULT']['Timezone']
 
 print('----------------------------------------------------------')
 print('WiFi hotspot onboarding script and visualisation dashboard')
@@ -20,6 +21,7 @@ print('SSID: ' + SSID)
 print('IP Address: "192.168.1.220"')
 print('Port number: 80')
 print('Reconnection delay: '+ ReconnectionDelay)
+print('Timezone: '+ tz)
 print('----------------------------------------------------------')
 install_ans = input('Install WiFi hotspot onboarding script and visualisation dashboard? [y/N]:')
 
