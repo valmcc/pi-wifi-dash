@@ -17,7 +17,7 @@ import pytz
 config = configparser.ConfigParser()
 config.read('/usr/lib/pi-wifi-dash/scripts/config/setup.cfg')
 dashboard_log_refresh = int(config['DEFAULT']['DashboardLogRefresh'])
-tz = config['DEFAULT']['Timezone']
+tz = pytz.timezone(config['DEFAULT']['Timezone'])
 
 app = Flask(__name__)
 app.debug = True
